@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% block title %}DermAI — AI-Powered Skin Analysis{% endblock %}
+{% block content %}
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <span class="hero-badge">Powered by Claude AI</span>
+    <h1 class="hero-title">
+      Know Your<br>
+      <em>Skin.</em><br>
+      Instantly.
+    </h1>
+    <p class="hero-sub">
+      Upload a photo or describe your symptoms. DermAI analyzes your skin condition, identifies potential diseases, and provides personalized treatment guidance in seconds.
+    </p>
+    <div class="hero-cta">
+      {% if current_user.is_authenticated %}
+        <a href="{{ url_for('analyze') }}"  class="btn btn-primary">Scan an Image →</a>
+        <a href="{{ url_for('symptoms') }}" class="btn btn-ghost">Check Symptoms</a>
+      {% else %}
+        <a href="{{ url_for('register') }}" class="btn btn-primary">Start for Free →</a>
+        <a href="{{ url_for('login') }}"    class="btn btn-ghost">Sign In</a>
+      {% endif %}
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-card">
+      <div class="hcard-header">
+        <span class="hcard-dot red"></span>
+        <span class="hcard-dot yellow"></span>
+        <span class="hcard-dot green"></span>
+        <span class="hcard-title">Analysis Result</span>
+      </div>
+      <div class="hcard-body">
+        <div class="hcard-label">Detected Condition</div>
+        <div class="hcard-disease">Contact Dermatitis</div>
+        <div class="hcard-confidence">
+          <span class="conf-badge high">High Confidence</span>
+        </div>
+        <div class="hcard-section">Recommended Treatments</div>
+        <ul class="hcard-list">
+          <li>✓ Topical corticosteroid cream</li>
+          <li>✓ Avoid known allergens</li>
+          <li>✓ Cool compresses for relief</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="features">
+  <div class="container">
+    <h2 class="section-title">How DermAI Works</h2>
+    <div class="features-grid">
+      <div class="feature-card" style="--delay:0s">
+        <div class="feature-icon">🔬</div>
+        <h3>AI Image Analysis</h3>
+        <p>Upload a clear photo of your skin concern and our Claude-powered AI identifies conditions with clinical precision.</p>
+      </div>
+      <div class="feature-card" style="--delay:.1s">
+        <div class="feature-icon">📋</div>
+        <h3>Symptom Checker</h3>
+        <p>Describe your symptoms in plain language. No medical jargon needed — our AI understands and diagnoses naturally.</p>
+      </div>
+      <div class="feature-card" style="--delay:.2s">
+        <div class="feature-icon">💊</div>
+        <h3>Treatment Plans</h3>
+        <p>Receive detailed medical treatments, home remedies, and precautions tailored to your specific condition.</p>
+      </div>
+      <div class="feature-card" style="--delay:.3s">
+        <div class="feature-icon">📂</div>
+        <h3>Analysis History</h3>
+        <p>Every scan is saved to your personal history so you can track your skin health journey over time.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="conditions-section">
+  <div class="container">
+    <h2 class="section-title">Conditions We Detect</h2>
+    <div class="conditions-grid">
+      {% set conditions = ['Acne & Breakouts','Eczema','Psoriasis','Rosacea','Melanoma','Ringworm','Hives','Contact Dermatitis','Seborrheic Dermatitis','Vitiligo','Warts','Shingles'] %}
+      {% for c in conditions %}
+        <span class="condition-tag">{{ c }}</span>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-card">
+      <h2>Ready to analyse your skin?</h2>
+      <p>Join thousands of users who trust DermAI for fast, private skin health insights.</p>
+      {% if current_user.is_authenticated %}
+        <a href="{{ url_for('analyze') }}" class="btn btn-primary">Start Analysis →</a>
+      {% else %}
+        <a href="{{ url_for('register') }}" class="btn btn-primary">Create Free Account →</a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block title %}Image Scan — DermAI{% endblock %}
+{% block content %}
+<div class="page-header">
+  <div class="container">
+    <h1>Image <em>Scan</em></h1>
+    <p>Upload a clear, well-lit photo of the affected skin area for AI analysis.</p>
+  </div>
+</div>
+
+<div class="container form-page">
+  <div class="form-card">
+    <form method="POST" enctype="multipart/form-data" id="uploadForm">
+      <div class="upload-zone" id="uploadZone">
+        <input type="file" name="image" id="imageInput" accept=".jpg,.jpeg,.png,.webp" required />
+        <div class="upload-content" id="uploadContent">
+          <div class="upload-icon">📸</div>
+          <h3>Drop your image here</h3>
+          <p>or <label for="imageInput" class="upload-link">browse to upload</label></p>
+          <span class="upload-hint">Supports JPG, PNG, WEBP — max 10MB</span>
+        </div>
+        <div class="upload-preview" id="uploadPreview" style="display:none">
+          <img id="previewImg" src="" alt="Preview" />
+          <button type="button" class="remove-img" id="removeImg">✕ Remove</button>
+        </div>
+      </div>
+
+      <div class="form-tips">
+        <h4>Tips for best results:</h4>
+        <ul>
+          <li>📷 Good lighting — natural light or bright indoor light</li>
+          <li>🔍 Close-up shot — clearly show the affected area</li>
+          <li>📐 Steady camera — avoid blurry images</li>
+          <li>🚫 No filters — use original, unedited photos</li>
+        </ul>
+      </div>
+
+      <div class="disclaimer-box">
+        ⚠️ <strong>Medical Disclaimer:</strong> DermAI is an AI tool for informational purposes only. Always consult a qualified dermatologist for professional medical advice, diagnosis, or treatment.
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-full" id="submitBtn">
+        <span id="btnText">Analyse Image →</span>
+        <span id="btnLoader" style="display:none">Analysing… please wait</span>
+      </button>
+    </form>
+  </div>
+</div>
+
+<script>
+const zone    = document.getElementById('uploadZone');
+const input   = document.getElementById('imageInput');
+const content = document.getElementById('uploadContent');
+const preview = document.getElementById('uploadPreview');
+const img     = document.getElementById('previewImg');
+const remove  = document.getElementById('removeImg');
+const form    = document.getElementById('uploadForm');
+const btn     = document.getElementById('submitBtn');
+const btnText = document.getElementById('btnText');
+const btnLoader = document.getElementById('btnLoader');
+
+function showPreview(file) {
+  if (!file) return;
+  const url = URL.createObjectURL(file);
+  img.src = url;
+  content.style.display = 'none';
+  preview.style.display = 'flex';
+}
+
+input.addEventListener('change', () => { if (input.files[0]) showPreview(input.files[0]); });
+remove.addEventListener('click', () => {
+  input.value = '';
+  img.src = '';
+  preview.style.display = 'none';
+  content.style.display = 'flex';
+});
+
+zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+zone.addEventListener('drop', e => {
+  e.preventDefault();
+  zone.classList.remove('drag-over');
+  const file = e.dataTransfer.files[0];
+  if (file) { const dt = new DataTransfer(); dt.items.add(file); input.files = dt.files; showPreview(file); }
+});
+
+form.addEventListener('submit', () => {
+  btn.disabled = true;
+  btnText.style.display = 'none';
+  btnLoader.style.display = 'inline';
+});
+</script>
+{% endblock %}
