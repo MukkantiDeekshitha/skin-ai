@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}Symptom Checker — DermAI{% endblock %}
+{% block content %}
+<div class="page-header">
+  <div class="container">
+    <h1>Symptom <em>Checker</em></h1>
+    <p>Describe your skin symptoms in plain language — our AI will identify the condition.</p>
+  </div>
+</div>
+
+<div class="container form-page">
+  <div class="form-card">
+    <form method="POST" id="symptomsForm">
+      <div class="form-group">
+        <label for="symptoms">Describe your symptoms</label>
+        <textarea id="symptoms" name="symptoms" rows="7"
+          placeholder="Example: I have red, itchy patches on my forearm that appeared 3 days ago. The skin feels dry and slightly raised. It gets worse when I scratch it..."
+          required minlength="10"></textarea>
+        <div class="char-count"><span id="charCount">0</span> characters</div>
+      </div>
+
+      <div class="symptom-prompts">
+        <p>Include details like:</p>
+        <div class="prompt-tags">
+          <button type="button" class="prompt-tag" onclick="addPrompt('Location (e.g. forearm, face, scalp)')">📍 Location</button>
+          <button type="button" class="prompt-tag" onclick="addPrompt('Duration (e.g. started 3 days ago)')">📅 Duration</button>
+          <button type="button" class="prompt-tag" onclick="addPrompt('Appearance (e.g. red, scaly, blistered)')">👁️ Appearance</button>
+          <button type="button" class="prompt-tag" onclick="addPrompt('Sensation (e.g. itchy, burning, painful)')">💡 Sensation</button>
+          <button type="button" class="prompt-tag" onclick="addPrompt('Triggers (e.g. after using soap, sun exposure)')">⚡ Triggers</button>
+          <button type="button" class="prompt-tag" onclick="addPrompt('Spread (e.g. spreading to other areas)')">🔄 Spreading?</button>
+        </div>
+      </div>
+
+      <div class="disclaimer-box">
+        ⚠️ <strong>Medical Disclaimer:</strong> DermAI is an AI tool for informational purposes only. Always consult a qualified dermatologist for professional medical advice, diagnosis, or treatment.
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-full" id="submitBtn">
+        <span id="btnText">Analyse Symptoms →</span>
+        <span id="btnLoader" style="display:none">Analysing… please wait</span>
+      </button>
+    </form>
+  </div>
+</div>
+
+<script>
+const textarea = document.getElementById('symptoms');
+const counter  = document.getElementById('charCount');
+const form     = document.getElementById('symptomsForm');
+const btn      = document.getElementById('submitBtn');
+const btnText  = document.getElementById('btnText');
+const btnLoader = document.getElementById('btnLoader');
+
+textarea.addEventListener('input', () => { counter.textContent = textarea.value.length; });
+
+function addPrompt(text) {
+  const cur = textarea.value;
+  textarea.value = cur ? cur + '\n' + text + ': ' : text + ': ';
+  textarea.focus();
+  counter.textContent = textarea.value.length;
+}
+
+form.addEventListener('submit', () => {
+  btn.disabled = true;
+  btnText.style.display = 'none';
+  btnLoader.style.display = 'inline';
+});
+</script>
+{% endblock %}

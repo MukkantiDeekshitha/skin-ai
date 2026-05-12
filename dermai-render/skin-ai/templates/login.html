@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Sign In — DermAI{% endblock %}
+{% block content %}
+<div class="auth-page">
+  <div class="auth-card">
+    <div class="auth-header">
+      <span class="logo-text auth-logo">Derm<em>AI</em></span>
+      <h1>Welcome back</h1>
+      <p>Sign in to access your skin analysis dashboard</p>
+    </div>
+    <form method="POST" class="auth-form">
+      <div class="form-group">
+        <label for="identifier">Username or Email</label>
+        <input type="text" id="identifier" name="identifier" placeholder="Enter username or email" required autocomplete="username" />
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Enter your password" required autocomplete="current-password" />
+      </div>
+      <div class="form-check">
+        <input type="checkbox" id="remember" name="remember" />
+        <label for="remember">Keep me signed in</label>
+      </div>
+      <button type="submit" class="btn btn-primary btn-full">Sign In →</button>
+    </form>
+    <p class="auth-switch">Don't have an account? <a href="{{ url_for('register') }}">Sign up free</a></p>
+  </div>
+</div>
+{% endblock %}
